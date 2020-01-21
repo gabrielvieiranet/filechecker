@@ -1,3 +1,3 @@
 # filechecker
 
-Simple file checking, FTP downloading
+Simple Node.js file checking, FTP downloading
