@@ -3,10 +3,7 @@ module.exports = {
     es6: true,
     node: true,
   },
-  extends: [
-    'airbnb-base',
-    'prettier',
-  ],
+  extends: ['airbnb-base', 'prettier'],
   plugins: ['prettier'],
   globals: {
     Atomics: 'readonly',
@@ -18,12 +15,14 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    'camelcase': 'off',
+    camelcase: 'off',
     'class-methods-use-this': 'off',
     'import/prefer-default-export': 'off',
     'prettier/prettier': 'error',
+    'no-await-in-loop': 'off',
     'no-console': 'off',
     'no-param-reassign': 'off',
-    'no-unused-vars': ['error', { 'argsIgnorePattern': 'next' }],
+    'no-restricted-syntax': 'off',
+    'no-unused-vars': ['error', { argsIgnorePattern: 'next' }],
   },
 };

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Pruma</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        outline: 0;
+        box-sizing: border-box;
+      }
+
+      *:focus {
+        outline: 0;
+      }
+
+      body {
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body,
+      input,
+      button {
+        font: 14px 'Roboto', sans-serif;
+        color: #333;
+      }
+
+      body {
+        background: #7159c1;
+      }
+
+      .content {
+        background: #fff;
+        width: 100%;
+        max-width: 960px;
+        margin: 20px auto;
+        padding: 50px 30px;
+        text-align: center;
+        border-radius: 4px;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+      }
+
+      h1 {
+        margin: 15px;
+      }
+
+      .file {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border-top: 1px solid #eee;
+        padding: 15px;
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading {
+        animation: spin 0.5s infinite linear;
+        font-size: 48px;
+        color: #0099ff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <h1>Arquivos Servidor FTP</h1>
+      <div id="serverFiles"></div>
+      <h1>Arquivos Locais</h1>
+      <div id="localFiles"></div>
+    </div>
+    <script>
+      var server = document.getElementById('serverFiles');
+      var local = document.getElementById('localFiles');
+
+      const loadingContent = '<i class="material-icons loading">refresh</i>';
+      server.innerHTML = loadingContent;
+
+      function load() {
+        server.innerHTML = loadingContent;
+        local.innerHTML = '';
+
+        fetch('/status')
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data) {
+            const { onlineFiles, localFiles } = data;
+
+            let onStr = '';
+            onlineFiles.forEach(file => {
+              onStr += '<div class="file">';
+              onStr += `<span>${file.name}</span>`;
+              onStr += `<span>${file.date}</span>`;
+              onStr += `<span>${file.dateString}</span>`;
+              onStr += '</div>';
+            });
+            server.innerHTML = onStr;
+
+            let loStr = '';
+            localFiles.forEach(file => {
+              loStr += '<div class="file">';
+              loStr += `<span>${file.name}</span>`;
+              loStr += `<span>${file.date}</span>`;
+              loStr += `<span>${file.dateString}</span>`;
+              loStr += '</div>';
+            });
+            local.innerHTML = loStr;
+          });
+      }
+
+      load();
+      const timer = setInterval(load, 30000);
+    </script>
+  </body>
+</html>

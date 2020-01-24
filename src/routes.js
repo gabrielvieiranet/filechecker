@@ -1,9 +1,10 @@
 import { Router } from 'express';
 
+import MainController from './controllers/MainController';
+
 const routes = new Router();
 
-routes.get('/', (req, res) => {
-  return res.json({ msg: 'ok' });
-});
+routes.get('/', MainController.index);
+routes.get('/status', MainController.status);
 
 export default routes;
